@@ -29,7 +29,7 @@ def setGame(game_id):
                 game_data['1'] = True
             elif(game_id == "Lichtergame"):
                 game_data['2'] = True
-                subprocess.call('C:/Users/Rouven/temp/NewFile.txt', shell=True)
+                subprocess.call('C:/Users/Rouven von Lübtow/temp/Hinweis1.txt', shell=True)
             elif(game_id == "NFC-Tag"):
                 game_data['3'] = True
             elif(game_id == "Anleitung-Lichtergame"):
