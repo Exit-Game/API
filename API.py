@@ -11,7 +11,7 @@ cors = CORS(app, resources={r'/get-game': {'origins': '*'}})
 @app.route("/get-game")
 def getGame():
     try:
-        with open("C:/Users/Rouven von Lübtow/Lasergame/pythonAPI/Games.json", 'r', encoding='utf-8') as file: #laden der JSON
+        with open("C:/Lasergame/Exit-Game/pythonAPI/Games.json", 'r', encoding='utf-8') as file: #laden der JSON
             game_data = json.load(file)
             return json.dumps(game_data, ensure_ascii=False, indent=4), 200 #zurückschicken der JSON
     except FileNotFoundError:
@@ -23,19 +23,20 @@ def getGame():
 @app.route("/set-game/<game_id>", methods=["POST"]) #<game_id> steht für den zu verändernen Wert
 def setGame(game_id):
     try:
-        with open("C:/Users/Rouven von Lübtow/Lasergame/pythonAPI/Games.json", 'r', encoding='utf-8') as file:
+        with open("C:/Exit-Game/Lasergame/pythonAPI/Games.json", 'r', encoding='utf-8') as file:
             game_data = json.load(file)
             if(game_id == "Lasergame"):
                 game_data['1'] = True
             elif(game_id == "Lichtergame"):
                 game_data['2'] = True
-                subprocess.call('C:/Users/Rouven von Lübtow/temp/Hinweis1.txt', shell=True)
+                subprocess.call('C:/Exit-Game/Lasergame/files/Anleitung_Lasergame.txt', shell=True) #Öffnen der Anleitung des Lasergames
+                subprocess.run('C:/Exit-Game/Lasergame/files/startLasergame.bat', shell=True) #Öffnen des Lasergames
             elif(game_id == "NFC-Tag"):
                 game_data['3'] = True
             elif(game_id == "Anleitung-Lichtergame"):
                 game_data['4'] = True
     
-        with open("C:/Users/Rouven von Lübtow/Lasergame/pythonAPI/Games.json", 'w', encoding='utf-8') as file: #Öffnen der JSON im Schreibmodus
+        with open("C:/Exit-Game/Lasergame/pythonAPI/Games.json", 'w', encoding='utf-8') as file: #Öffnen der JSON im Schreibmodus
             json.dump(game_data, file, ensure_ascii=False, indent=4) #schreiben in die JSON-Datei
 
             return json.dumps(game_data, ensure_ascii=False, indent=4), 200 #Antwort + Statuscode 200
@@ -43,12 +44,6 @@ def setGame(game_id):
         return "Die Datei wurde nicht gefunden."
     except json.JSONDecodeError:
         return "Die Datei enthält keine gültigen JSON-Daten."
-
-
-# @app.after_request
-# def set_cors_headers(response):
-#     response.headers['Acces-Control-Allow-Origin'] = '*'
-#     return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug=True)
